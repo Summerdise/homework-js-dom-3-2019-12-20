@@ -49,6 +49,20 @@ var increaseProductNum = document.getElementsByClassName(increaseProductNum)
 function main() {
     loadProducts();
 
+    tbody.addEventListener("click", function(event) {
+        var mouseTarget = event.target;
+        var tdIndex = mouseTarget.parentNode;
+        if ("reduceProductNum" == mouseTarget.className) {
+            reduceProduct(tdIndex);
+            calculateSingleItemPrice(tdIndex)
+        } else if ("increaseProductNum" === mouseTarget.className) {
+            increaseProduct(tdIndex);
+            calculateSingleItemPrice(tdIndex)
+        } else if ("choose" === mouseTarget.className) {
+
+        }
+
+    })
 }
 
 function loadProducts() {
@@ -60,9 +74,9 @@ function loadProducts() {
         }
         var addChecked = '<td><input class="choose" type="checkbox"' + checked + '></td>';
         var addProductName = '<td>' + carProducts[i].name + '</td>';
-        var addSinglePrice = '<td>' + carProducts[i].price + '</td>';
-        var addProductNum = '<td><button type="button" class="reduceProductNum">-</button>' + carProducts[i].count + '<button type="button" class="increaseProductNum">+</button></td>';
-        var addTotalPrice = '<td>' + carProducts[i].price * carProducts[i].count + '</td>';
+        var addSinglePrice = '<td class="item-price">' + carProducts[i].price + '</td>';
+        var addProductNum = '<td><button type="button" class="reduceProductNum">-</button><span class="item-count">' + carProducts[i].count + '</span><button type="button" class="increaseProductNum">+</button></td>';
+        var addTotalPrice = '<td><span class="single-item-price">' + carProducts[i].price * carProducts[i].count + '</span></td>';
 
         tr.innerHTML = addChecked + addProductName + addSinglePrice + addProductNum + addTotalPrice;
         tbody.appendChild(tr);
@@ -71,4 +85,29 @@ function loadProducts() {
     carConclusion.innerHTML = "共计2件商品，11￥";
 
 }
+
+function reduceProduct(tdIndex) {
+    var count = tdIndex.querySelector("span");
+    if (count.innerText == 1) {
+        console.log(tdIndex.parentNode);
+        tbody.removeChild(tdIndex.parentNode);
+    } else {
+        count.innerText--;
+    }
+}
+
+function increaseProduct(tdIndex) {
+    var count = tdIndex.querySelector("span");
+    count.innerText++;
+}
+
+function calculateSingleItemPrice(tdIndex) {
+    var rowChoosen = tdIndex.parentNode;
+    var itemCount = rowChoosen.getElementsByTagName("td")[3].getElementsByTagName("span")[0].innerText;
+    var itemSinglePrice = rowChoosen.getElementsByTagName("td")[2].innerText;
+    var singleItemPrice = rowChoosen.getElementsByTagName("td")[4].getElementsByTagName("span")[0];
+    singleItemPrice.innerText = parseInt(itemCount) * parseInt(itemSinglePrice);
+}
+
+
 main();
