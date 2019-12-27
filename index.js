@@ -43,8 +43,7 @@ var carProducts = [{
 ]
 
 var tbody = document.getElementsByTagName("tbody")[0];
-var reduceProductNum = document.getElementsByClassName(reduceProductNum);
-var increaseProductNum = document.getElementsByClassName(increaseProductNum)
+var carConclusion = document.getElementById("car-conclusion")
 
 function main() {
     loadProducts();
@@ -54,12 +53,14 @@ function main() {
         var tdIndex = mouseTarget.parentNode;
         if ("reduceProductNum" == mouseTarget.className) {
             reduceProduct(tdIndex);
-            calculateSingleItemPrice(tdIndex)
+            calculateSingleItemPrice(tdIndex);
+            calculateSum()
         } else if ("increaseProductNum" === mouseTarget.className) {
             increaseProduct(tdIndex);
-            calculateSingleItemPrice(tdIndex)
+            calculateSingleItemPrice(tdIndex);
+            calculateSum();
         } else if ("choose" === mouseTarget.className) {
-
+            calculateSum();
         }
 
     })
@@ -81,7 +82,6 @@ function loadProducts() {
         tr.innerHTML = addChecked + addProductName + addSinglePrice + addProductNum + addTotalPrice;
         tbody.appendChild(tr);
     }
-    var carConclusion = document.getElementById("car-conclusion")
     carConclusion.innerHTML = "共计2件商品，11￥";
 
 }
@@ -107,6 +107,21 @@ function calculateSingleItemPrice(tdIndex) {
     var itemSinglePrice = rowChoosen.getElementsByTagName("td")[2].innerText;
     var singleItemPrice = rowChoosen.getElementsByTagName("td")[4].getElementsByTagName("span")[0];
     singleItemPrice.innerText = parseInt(itemCount) * parseInt(itemSinglePrice);
+}
+var choose = document.getElementsByClassName("choose");
+var itemCount = document.getElementsByClassName("item-count");
+var singleItemPrice = document.getElementsByClassName("single-item-price");
+
+function calculateSum() {
+    var totalCount = 0;
+    var totalPrice = 0;
+    for (var i = 0; i < choose.length; i++) {
+        if (choose[i].checked) {
+            totalPrice += parseFloat(singleItemPrice[i].innerText),
+                totalCount += parseFloat(itemCount[i].innerText);
+        }
+    }
+    carConclusion.innerHTML = '共计<span class="total-count">' + totalCount + '</span>件商品，¥<span class="total-price">' + totalPrice + '</span>';
 }
 
 
