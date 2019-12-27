@@ -43,7 +43,11 @@ var carProducts = [{
 ]
 
 var tbody = document.getElementsByTagName("tbody")[0];
-var carConclusion = document.getElementById("car-conclusion")
+var carConclusion = document.getElementById("car-conclusion");
+var choose = document.getElementsByClassName("choose");
+var itemCount = document.getElementsByClassName("item-count");
+var singleItemPrice = document.getElementsByClassName("single-item-price");
+var chooseAll = document.getElementById("choose-all");
 
 function main() {
     loadProducts();
@@ -60,10 +64,11 @@ function main() {
             calculateSingleItemPrice(tdIndex);
             calculateSum();
         } else if ("choose" === mouseTarget.className) {
+            isAllChoosen();
             calculateSum();
         }
-
     })
+    chooseAll.addEventListener("click", chooseAllProduct);
 }
 
 function loadProducts() {
@@ -108,9 +113,6 @@ function calculateSingleItemPrice(tdIndex) {
     var singleItemPrice = rowChoosen.getElementsByTagName("td")[4].getElementsByTagName("span")[0];
     singleItemPrice.innerText = parseInt(itemCount) * parseInt(itemSinglePrice);
 }
-var choose = document.getElementsByClassName("choose");
-var itemCount = document.getElementsByClassName("item-count");
-var singleItemPrice = document.getElementsByClassName("single-item-price");
 
 function calculateSum() {
     var totalCount = 0;
@@ -124,5 +126,22 @@ function calculateSum() {
     carConclusion.innerHTML = '共计<span class="total-count">' + totalCount + '</span>件商品，¥<span class="total-price">' + totalPrice + '</span>';
 }
 
+function isAllChoosen() {
+    for (var i = 0; i < choose.length; i++) {
+        if (choose[i].checked === false) {
+            chooseAll.checked = false;
+            break;
+        }
+    }
+    if (i === choose.length) {
+        chooseAll.checked = "checked";
+    }
+}
 
+function chooseAllProduct() {
+    for (var i = 0; i < choose.length; i++) {
+        choose[i].checked = chooseAll.checked;
+    }
+    calculateSum();
+}
 main();
