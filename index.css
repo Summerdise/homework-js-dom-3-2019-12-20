@@ -1,0 +1,9 @@
+.cart {
+    margin: 0 auto;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.cart tr td {
+    border: 1px solid black;
+}
